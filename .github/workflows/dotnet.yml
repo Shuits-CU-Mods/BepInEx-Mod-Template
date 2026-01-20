@@ -69,7 +69,7 @@ jobs:
             done <<< "$HINT_PATHS"
           fi
 
-          FILE="$(grep -rl '\[BepInPlugin\s*\(' . --include='*.cs' --exclude-dir={.git,bin,obj} | head -n1)"
+          FILE="$(grep -rPl '\[BepInPlugin\s*\(' . --include='*.cs' --exclude-dir={.git,bin,obj} | head -n1)"
           if [ ! -f "$FILE" ]; then
             die "No file containing BepInPlugin attribute was found"
           fi
