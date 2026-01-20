@@ -7,8 +7,8 @@
     <ProjectGuid>{CAB60128-2C09-4ABD-8786-16839DB58CFC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BepInExModTemplate</RootNamespace>
-    <AssemblyName>BepInExModTemplate</AssemblyName>
+    <RootNamespace>BepInEx-Mod-Template</RootNamespace>
+    <AssemblyName>BepInEx-Mod-Template</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
