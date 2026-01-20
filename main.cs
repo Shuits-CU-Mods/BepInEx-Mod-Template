@@ -31,7 +31,7 @@ namespace BepInExModTemplate
         public const string pluginName = "MOD NAME";
 
         // Year.Month.Version.Bugfix
-        public const string pluginVersion = "26.1.1.0";
+        public const string pluginVersion = "0.0.0.0";
 
         public static BepInExModTemplate Instance;
 
