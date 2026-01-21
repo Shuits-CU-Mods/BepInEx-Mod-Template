@@ -106,12 +106,24 @@ namespace BepInExModTemplate
                     string targetMethod = splitName[1].Replace("get_", "").Replace("set_", "");
                     string patchType = splitName[2];
 
+                    MethodInfo patchScript = typeof(MyPatches).GetMethod(patch.Name);
+
+                    ParameterInfo[] parameters = patchScript.GetParameters();
+                    Type[] scriptArgTypes = parameters.Where(p => p.ParameterType != AccessTools.TypeByName(targetType)).Select(p => p.ParameterType).ToArray();
+
                     MethodInfo ogScript = null;
                     switch (targetMethodType)
                     {
                         case MethodType.Enumerator:
                         case MethodType.Normal:
-                            ogScript = AccessTools.Method(AccessTools.TypeByName(targetType), targetMethod);
+                            try
+                            {
+                                ogScript = AccessTools.Method(AccessTools.TypeByName(targetType), targetMethod);
+                            }
+                            catch (Exception)
+                            {
+                                ogScript = AccessTools.Method(AccessTools.TypeByName(targetType), targetMethod, scriptArgTypes);
+                            }
                             break;
 
                         case MethodType.Getter:
@@ -125,7 +137,6 @@ namespace BepInExModTemplate
                             throw new Exception($"Unknown patch method\nPatch method type \"{targetMethodType}\" currently has no handling");
                     }
 
-                    MethodInfo patchScript = typeof(MyPatches).GetMethod(patch.Name);
                     List<string> validPatchTypes = new List<string>
                     {
                         "Prefix",
