@@ -17,29 +17,32 @@ namespace BepInExModTemplate.Helpers
         {
             // Gets the file name. If it isn't exact, it returns null
             Assembly asm = Assembly.GetExecutingAssembly();
-            string newFilename = asm.GetManifestResourceNames().FirstOrDefault(n => n.EndsWith(fileName));
-            if (newFilename == null)
+            fileName = asm.GetManifestResourceNames().FirstOrDefault(n => n.EndsWith(fileName));
+            if (fileName == null)
             {
                 Debug.LogError($"File by the name of {fileName} does not exist. Check capitalization and file extension");
                 return (null, null);
             }
 
             // Gets the file stream
-            Stream stream = asm.GetManifestResourceStream(newFilename);
-            if (!newFilename.StartsWith(asm.FullName + "." + (folderName != null ? folderName + "." : "")))
+            Stream stream = asm.GetManifestResourceStream(fileName);
+            if (!fileName.StartsWith(Assembly.GetExecutingAssembly().GetName().Name + "." + (folderName != null ? folderName + "." : "")))
             {
                 Debug.LogError($"File does not exist in embedded resources");
                 return (null, null);
             }
-            return (newFilename, stream);
+            int lastDot = fileName.LastIndexOf(".");
+            int secondLastDot = fileName.LastIndexOf(".", lastDot - 1);
+            return (fileName.Substring(secondLastDot + 1), stream);
         }
 
-        public static byte[] LoadFileBytes(string fileName)
+        public static (string, byte[]) LoadFileBytes(string fileName)
         {
-            Stream stream = LoadFileStream(fileName).Item2;
+            (string, Stream) fileInfo = LoadFileStream(fileName);
+            Stream stream = fileInfo.Item2;
             byte[] fileData = new byte[stream.Length];
             stream.Read(fileData, 0, fileData.Length);
-            return fileData;
+            return (fileInfo.Item1, fileData);
         }
 
         public static AudioClip LoadEmbeddedAudio(string fileName)
