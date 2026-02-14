@@ -24,12 +24,6 @@ namespace BepInExModTemplate.Helpers
                 return default;
             }
 
-            if (!resourceName.StartsWith(asm.GetName().Name + "." + (folderName != null ? folderName + "." : "")))
-            {
-                Debug.LogError($"File does not exist in embedded resources");
-                return default;
-            }
-
             using (Stream stream = asm.GetManifestResourceStream(resourceName))
             {
                 return useStream(FileNameFromResource(resourceName), stream);
@@ -169,7 +163,7 @@ namespace BepInExModTemplate.Helpers
 
         internal static string FileNameFromResource(string resourceName)
         {
-            int extensionDotIndex = resourceName.IndexOf(".");
+            int extensionDotIndex = resourceName.LastIndexOf(".");
             int fileDotIndex = resourceName.LastIndexOf(".", extensionDotIndex - 1);
             return resourceName.Substring(fileDotIndex + 1);
         }
