@@ -24,7 +24,7 @@ namespace BepInExModTemplate.Helpers
             Status = PatchStatus.Pending;
             ActiveVersion = "";
 
-            MethodInfo target = AccessTools.Method(typeof(PreRunScript), "Awake");
+            MethodInfo target = AccessTools.Method(typeof(PreRunScript), "Start");
             HarmonyMethod prefix = new HarmonyMethod(typeof(GameVersionChecker).GetMethod("VersionCheck", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public));
             harmony.Patch(target, prefix: prefix);
 
@@ -39,7 +39,8 @@ namespace BepInExModTemplate.Helpers
             Dictionary<string, (string label, string code)> supportedVersions = new Dictionary<string, (string label, string code)>
             {
                 ["Text (TMP) (18)"] = ("V5 Pre-testing 5", "v5p5"),
-                ["Text (TMP) (17)"] = ("V5 Pre-testing 4", "v5p4")
+                ["Text (TMP) (17)"] = ("V5 Pre-testing 4", "v5p4"),
+                ["Version"] = ("v5.", "v5d")
             };
             foreach (var version in supportedVersions)
             {

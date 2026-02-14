@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using BepInExModTemplate.Helpers;
 using HarmonyLib;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BepInExModTemplate
@@ -47,7 +48,14 @@ namespace BepInExModTemplate
         {
             yield return GameVersionChecker.Run(harmony);
 
-            if (GameVersionChecker.Status == GameVersionChecker.PatchStatus.Safe)
+            List<string> SafeVersions = new List<string>()
+            {
+                "v5p4",
+                "v5p5",
+                "v5d"
+            };
+
+            if (GameVersionChecker.Status == GameVersionChecker.PatchStatus.Safe && SafeVersions.Contains(GameVersionChecker.ActiveVersion))
             {
                 CustomResourceManager.AudioManager.Initialize(logger);
                 CustomResourceManager.FontManager.Initialize(logger);
